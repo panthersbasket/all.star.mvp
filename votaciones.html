@@ -24,7 +24,7 @@
       align-items: start;
       padding: 0 12px calc(var(--nav-height) + var(--safe-bottom));
       text-align: center;
-      overflow-y: auto; /* scroll activado */
+      overflow-y: auto; /* scroll activado para que el botón no se corte */
     }
 
     .back-button {
@@ -126,7 +126,7 @@
       font-size: 13px;
       box-shadow: 0 0 10px rgba(0,0,0,0.6);
       margin-top: 8px;
-      margin-bottom: 12px;
+      margin-bottom: 120px; /* sube bastante el botón para que no se tape */
       transition: transform 0.25s ease;
       justify-self: center;
     }
@@ -259,7 +259,7 @@
       <img src="https://img.icons8.com/ios-filled/50/ffffff/calendar.png" alt="Partidos"/>
       Horarios
     </a>
-    <a href="votaciones.html"class="active">
+    <a href="votaciones.html" class="active">
       <img src="https://img.icons8.com/ios-filled/50/ffffff/ballot.png" alt="Votaciones"/>
       Votaciones
     </a>
