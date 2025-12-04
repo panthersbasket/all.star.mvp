@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Estadísticas del Torneo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --nav-height: 65px; --safe-bottom: env(safe-area-inset-bottom, 0px); }
+
+    body {
+      font-family: 'Poppins', 'Arial', sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(90deg, #096BB3 0%, #000000 50%, #BF1723 100%);
+      color: #fff;
+    }
+
+    .page {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding-bottom: calc(var(--nav-height) + var(--safe-bottom));
+      overflow: hidden;
+      align-items: center;
+    }
+
+    .back-button {
+      background: #000; color: #fff; padding: 6px 18px; font-size: 13px;
+      border-radius: 50px; font-weight: bold; margin-top: 25px;
+      border: none; cursor: pointer;
+      box-shadow: 0 0 10px rgba(0,0,0,0.6); transition: transform 0.3s ease;
+    }
+    .back-button:hover { transform: scale(1.05); }
+
+    h1 {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.6rem; /* reducido para que no se corte */
+      white-space: nowrap; /* fuerza una sola línea */
+      text-align: center;
+      text-transform: uppercase;
+      margin: 12px 0 8px;
+      letter-spacing: 1px;
+      text-shadow: 2px 2px 6px rgba(10,10,10,0.6), 0 0 8px #000000;
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 1.4rem; } /* aún más compacto en móviles */
+    }
+
+    /* Contenedores (lista de equipos y jugadores del equipo) */
+    .equipos-container, .jugadores-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      justify-items: center;
+      align-items: start;
+      gap: 18px;
+      padding: 12px;
+      width: 100%;
+      flex-grow: 1;
+      overflow-y: auto;
+      position: relative;
+      scrollbar-width: thin;
+      scrollbar-color: #000000 rgba(0,0,0,0.25);
+    }
+    .equipos-container::after, .jugadores-container::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 6px;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      border-radius: 3px;
+      pointer-events: none;
+    }
+    .equipos-container::-webkit-scrollbar, .jugadores-container::-webkit-scrollbar { width: 10px; }
+    .equipos-container::-webkit-scrollbar-track, .jugadores-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.25); border-radius: 10px; }
+    .equipos-container::-webkit-scrollbar-thumb, .jugadores-container::-webkit-scrollbar-thumb {
+      background: #000; border-radius: 10px; border: 2px solid rgba(255,255,255,0.2);
+    }
+    .equipos-container::-webkit-scrollbar-thumb:hover, .jugadores-container::-webkit-scrollbar-thumb:hover { background: #333; }
+
+    /* Tarjetas */
+    .equipo-card, .jugador-card {
+      background: rgba(0,0,0,0.6);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      border-radius: 12px;
+      box-shadow: 0 0 6px rgba(191,23,35,0.5), 0 0 6px rgba(9,107,179,0.5);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      width: 100%; max-width: 220px; padding: 14px; text-align: center;
+    }
+    .equipo-card:hover, .jugador-card:hover { transform: scale(1.06); }
+
+    /* Imagen: proporción fija y sin recorte */
+    .img-wrap {
+      width: 80px;
+      aspect-ratio: 1 / 1;
+      border-radius: 14px;
+      margin-bottom: 8px;
+      background: #111;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+    .jugador-card .img-wrap {
+      width: 60px;
+      border-radius: 12px;
+      margin-bottom: 6px;
+    }
+    .img-wrap img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain; /* nunca se corta */
+      display: block;
+    }
+
+    .equipo-card h3, .jugador-card h3 {
+      font-family: 'Anton', sans-serif; font-size: 1rem; margin: 4px 0; color: #fff;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      text-align: center;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+    .jugador-card p { font-size: 0.85rem; margin: 2px 0; }
+
+    .ver-jugadores {
+      font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem;
+      background: #000; color: #fff; padding: 6px 12px; border-radius: 16px; margin-top: 6px;
+      font-weight: bold; border: none; cursor: pointer;
+    }
+
+    #mensajeCargando {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      font-size: 1rem; color: #ffcccc; white-space: nowrap; z-index: 10000; pointer-events: none;
+    }
+
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; width: 100%;
+      background: rgba(0,0,0,0.85);
+      display: flex; justify-content: space-around; align-items: center;
+      padding: 8px 0 calc(8px + var(--safe-bottom));
+      border-top: 2px solid #BF1723; height: var(--nav-height); backdrop-filter: blur(5px); z-index: 1000;
+    }
+    .bottom-nav a {
+      color: #fff; text-decoration: none; text-align: center; font-size: 8px;
+      display: flex; flex-direction: column; align-items: center;
+      max-width: 60px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      transition: color 0.3s ease;
+    }
+    .bottom-nav a:hover { color: #BF1723; }
+    .bottom-nav img { width: 22px; height: 22px; margin-bottom: 3px; }
+    .bottom-nav a.active { color: #BF1723; }
+    .bottom-nav a.active img {
+      filter: invert(28%) sepia(94%) saturate(7470%) hue-rotate(350deg) brightness(96%) contrast(92%);
+    }
+
+    @media (max-width: 768px) {
+      .equipos-container { grid-template-columns: repeat(2, 1fr); gap: 16px; padding: 16px; }
+      .equipo-card { max-width: 95%; padding: 12px; }
+      .img-wrap { width: 72px; }
+      .jugador-card .img-wrap { width: 56px; }
+      .equipo-card h3 { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <button class="back-button" id="btnAtras">← Atrás</button>
+    <h1 id="tituloPagina">Estadísticas del Torneo</h1>
+
+    <!-- Vista de equipos -->
+    <div class="equipos-container" id="equiposContainer"></div>
+
+    <!-- Vista de jugadores del equipo seleccionado -->
+    <div class="jugadores-container" id="jugadoresContainer" style="display:none;"></div>
+  </div>
+
+  <!-- Barra nav inferior -->
+  <nav class="bottom-nav">
+    <a href="index.html">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/home.png" alt="Inicio"/>
+      Inicio
+    </a>
+    <a href="mvp.html" class="active">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/combo-chart.png" alt="Mvp Torneo"/>
+      MVP del Torneo
+    </a>
+    <a href="partidos.html">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/calendar.png" alt="Partidos"/>
+      Horarios
+    </a>
+    <a href="votaciones.html">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/ballot.png" alt="Votaciones"/>
+      Votaciones
+    </a>
+    <a href="reglamento.html">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/rules.png" alt="Reglamento"/>
+      Reglamento
+    </a>
+  </nav>
+
+  <div id="mensajeCargando">🏀 CARGANDO ESTADÍSTICAS...</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script>
+    const equiposContainer = document.getElementById("equiposContainer");
+    const jugadoresContainer = document.getElementById("jugadoresContainer");
+    const mensajeCargando = document.getElementById("mensajeCargando");
+    const tituloPagina = document.getElementById("tituloPagina");
+    const btnAtras = document.getElementById("btnAtras");
+
+    let equipos = {};
+    let modoActual = "equipos";
+    let equipoActual = "";
+
+    // CSV con columnas: Equipo, Nombre, TirosLibres, Puntos2, Triples, ImgJugador, ImgEquipo
+    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQL0IIWXMHm8J_cnyAsSw0oZtQr1plE7CgL5zIEu1Ir1cz4NwLWtq7YXUcmtfYLxX8Uf_GJGfLS7pvP/pub?gid=610259645&single=true&output=csv";
+
+    // Divide el nombre en dos líneas: nombre arriba, apellidos abajo
+    function formatNombre(nombre) {
+      const partes = (nombre || "").trim().split(/\s+/);
+      if (partes.length <= 1) return nombre;
+      const nombrePrincipal = partes[0];
+      const apellidos = partes.slice(1).join(" ");
+      return `${nombrePrincipal}<br>${apellidos}`;
+    }
+
+    function cargarDatos() {
+      mensajeCargando.style.display = "block";
+
+      Papa.parse(sheetURL, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function (results) {
+          const data = results.data;
+          const nuevosEquipos = {};
+
+          data.forEach((row) => {
+            const equipo = (row.Equipo || "").trim();
+            const nombre = (row.Nombre || "").trim();
+            if (!equipo || !nombre) return;
+
+            if (!nuevosEquipos[equipo]) nuevosEquipos[equipo] = [];
+
+            const imgJugador = "img/" + ((row.ImgJugador || "default.png").trim());
+            const imgEquipo = "img/" + ((row.ImgEquipo || "default.png").trim());
+
+            nuevosEquipos[equipo].push({
+              nombre,
+              TirosLibres: parseInt(row.TirosLibres) || 0,
+              Puntos2: parseInt(row.Puntos2) || 0,
+              Triples: parseInt(row.Triples) || 0,
+              img: imgJugador,
+              ImgEquipo: imgEquipo
+            });
+          });
+
+          equipos = nuevosEquipos;
+          mensajeCargando.style.display = "none";
+
+          if (modoActual === "equipos") {
+            mostrarEquipos();
+          } else {
+            mostrarJugadores(equipoActual);
+          }
+        },
+        error: function () {
+          mensajeCargando.textContent = "❌ Error cargando estadísticas";
+        }
+      });
+    }
+
+    function mostrarEquipos() {
+      modoActual = "equipos";
+      equipoActual = "";
+      tituloPagina.textContent = "Estadísticas del Torneo";
+
+      equiposContainer.style.display = "grid";
+      jugadoresContainer.style.display = "none";
+      equiposContainer.innerHTML = "";
+
+      const nombresEquipos = Object.keys(equipos).sort();
+
+      nombresEquipos.forEach((equipo) => {
+        const imgEquipo = (equipos[equipo][0] && equipos[equipo][0].ImgEquipo) || "img/default.png";
+
+        const card = document.createElement("div");
+        card.className = "equipo-card";
+        card.innerHTML = `
+          <div class="img-wrap">
+            <img src="${imgEquipo}" alt="${equipo}" onerror="this.src='img/default.png'">
+          </div>
+          <h3 title="${equipo}">${equipo}</h3>
+          <button class="ver-jugadores">Ver jugadores</button>
+        `;
+
+        card.querySelector(".ver-jugadores").addEventListener("click", () => {
+          mostrarJugadores(equipo);
+        });
+
+        equiposContainer.appendChild(card);
+      });
+
+      equiposContainer.scrollTop = 0;
+    }
+
+    function mostrarJugadores(equipo) {
+      modoActual = "jugadores";
+      equipoActual = equipo;
+      tituloPagina.textContent = "Estadísticas - " + equipo;
+
+      equiposContainer.style.display = "none";
+      jugadoresContainer.style.display = "grid";
+      jugadoresContainer.innerHTML = "";
+
+      const lista = (equipos[equipo] || []).slice();
+
+      lista.forEach((jugador) => {
+        const card = document.createElement("div");
+        card.className = "jugador-card";
+        card.innerHTML = `
+          <div class="img-wrap">
+            <img src="${jugador.img}" alt="${jugador.nombre}" onerror="this.src='img/default.png'">
+          </div>
+          <h3 title="${jugador.nombre}">${formatNombre(jugador.nombre)}</h3>
+          <p>${jugador.TirosLibres} TL</p>
+          <p>${jugador.Puntos2} P2</p>
+          <p>${jugador.Triples} T3</p>
+        `;
+        jugadoresContainer.appendChild(card);
+      });
+
+      jugadoresContainer.scrollTop = 0;
+    }
+
+    btnAtras.addEventListener("click", () => {
+      if (modoActual === "jugadores") {
+        mostrarEquipos();
+        return;
+      }
+      if (document.referrer && document.referrer !== window.location.href) {
+        history.back();
+      } else {
+        window.location.href = "mvp.html";
+      }
+    });
+
+    cargarDatos();
+  </script>
+</body>
+</html>

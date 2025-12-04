@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Horarios</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --nav-height: 65px;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Poppins', 'Arial', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(90deg, #096BB3 0%, #BF1723 100%);
+      color: #fff;
+      padding-bottom: calc(var(--nav-height) + var(--safe-bottom));
+      overflow-x: hidden;
+    }
+
+    .top-bar {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding-top: calc(var(--safe-top) + 24px);
+      padding-bottom: 12px;
+      z-index: 100;
+    }
+
+    .back-button {
+      background: #000;
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+    }
+
+    .view {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 16px;
+      width: 100%;
+      margin: 0;
+    }
+
+    .view h1 {
+      font-family: 'Anton', sans-serif;
+      text-align: center;
+      font-size: 1.6rem;
+      text-transform: uppercase;
+      margin: 6px 0;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.6), 0 0 8px #000;
+    }
+
+    .horarios-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .horario-col {
+      flex: 1;
+      background: rgba(0,0,0,0.6);
+      padding: 16px;
+      border-radius: 14px;
+      box-shadow: 0 0 10px rgba(191,23,35,0.4), 0 0 10px rgba(9,107,179,0.4);
+    }
+
+    .horario-col h2 {
+      font-family: 'Anton', sans-serif;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .horario-col p {
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0 calc(8px + var(--safe-bottom));
+      border-top: 2px solid #BF1723;
+      height: var(--nav-height);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+    }
+
+    .bottom-nav a {
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      font-size: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 60px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .bottom-nav a.active { color: #BF1723; }
+
+    /* 🔥 Aquí el filtro para que el icono activo se vea rojo */
+    .bottom-nav a.active img {
+      filter: invert(28%) sepia(94%) saturate(7470%) hue-rotate(350deg) brightness(96%) contrast(92%);
+    }
+
+    .bottom-nav img {
+      width: 22px;
+      height: 22px;
+      margin-bottom: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Botón atrás inteligente -->
+  <div class="top-bar">
+    <button class="back-button" onclick="backSmart()">← Atrás</button>
+  </div>
+
+  <!-- Vista Horarios -->
+  <div class="view">
+    <h1>Horarios</h1>
+    <div class="horarios-grid">
+      <div class="horario-col">
+        <h2>📅 SÁBADO 6 DE DICIEMBRE <br>(10:00 – 21:00)</h2>
+        <p><strong>10:00 – 12:00</strong><br>Panther’s vs Splashers</p>
+        <p><strong>12:00 – 14:00</strong><br>ByForce vs Vendrell</p>
+        <p><strong>14:00 – 15:30</strong><br>Pausa comida</p>
+        <p><strong>15:30 – 16:30</strong><br>PREVIA Concurso de Triples</p>
+        <p><strong>17:00 – 19:00</strong><br>Splashers vs Vendrell</p>
+        <p><strong>19:00 – 21:00</strong><br>Panther’s vs ByForce</p>
+      </div>
+
+      <div class="horario-col">
+        <h2>📅 DOMINGO 7 DE DICIEMBRE <br>(10:00 – 21:00)</h2>
+        <p><strong>10:00 – 12:00</strong><br>Splashers vs ByForce</p>
+        <p><strong>12:00 – 14:00</strong><br>Panther’s vs Vendrell</p>
+        <p><strong>14:00 – 16:00</strong><br>Pausa comida</p>
+        <p><strong>16:00 – 16:30</strong><br>FINAL Concurso de Triples</p>
+        <p><strong>16:30 – 17:30</strong><br>Actividad Influencers 1vs1</p>
+        <p><strong>17:30 – 18:30</strong><br>PARTIDO ALL STAR</p>
+        <p><strong>19:00 – 21:00</strong><br>GRAN FINAL: 1º vs 2º</p>
+        <p><strong>21:00</strong><br>Entrega de Premios</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Barra nav inferior -->
+  <nav class="bottom-nav">
+    <a href="index.html">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/home.png" alt="Inicio"/>
+      Inicio
+    </a>
+    <a href="mvp.html">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/combo-chart.png" alt="Mvp Torneo"/>
+      MVP del Torneo
+    </a>
+    <a href="horarios.html" class="active">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/calendar.png" alt="Horarios"/>
+      Horarios
+    </a>
+    <a href="votaciones.html">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/ballot.png" alt="Votaciones"/>
+      Votaciones
+    </a>
+    <a href="reglamento.html">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/rules.png" alt="Reglamento"/>
+      Reglamento
+    </a>
+  </nav>
+
+  <script>
+    function backSmart() {
+      const hasReferrer = document.referrer && document.referrer !== location.href;
+      if (hasReferrer || history.length > 1) {
+        history.back();
+      } else {
+        window.location.href = 'index.html';
+      }
+    }
+  </script>
+</body>
+</html>

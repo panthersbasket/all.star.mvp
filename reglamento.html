@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Reglamento Torneo</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(90deg, #096BB3 0%, #000000 50%, #BF1723 100%);
+      color: white;
+      overflow-y: auto;
+    }
+
+    .top-bar {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding-top: calc(env(safe-area-inset-top, 0px) + 20px);
+      padding-bottom: 10px;
+    }
+
+    .back-button {
+      background: #000;
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+      transition: transform 0.2s ease;
+    }
+    .back-button:hover { transform: scale(1.05); }
+
+    .viewport {
+      min-height: calc(100vh - 65px - 10px - calc(env(safe-area-inset-bottom, 0px)));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0 16px 80px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(1.4rem, 4.5vw, 1.8rem);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 12px 0 16px;
+      text-shadow: 2px 2px 0 #000, 0 0 6px #000000;
+    }
+
+    .reglamento-buttons {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      justify-items: center;
+    }
+
+    .regla-btn {
+      width: 92%;
+      max-width: 680px;
+      min-height: clamp(64px, 11vh, 90px);
+      background: rgba(0,0,0,0.7);
+      border-radius: 16px;
+      color: #fff;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 0 16px rgba(0,0,0,0.55);
+      transition: transform 200ms ease, background 200ms ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(1rem, 4vw, 1.3rem);
+      letter-spacing: 0.6px;
+    }
+
+    .regla-btn:hover {
+      transform: scale(1.02);
+      background: rgba(0,0,0,0.82);
+    }
+
+    @media (min-width: 680px) {
+      .reglamento-buttons {
+        grid-template-columns: 1fr 1fr;
+      }
+      .regla-btn.full {
+        grid-column: 1 / -1;
+      }
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 6px 0 calc(env(safe-area-inset-bottom, 0px));
+      border-top: 2px solid #BF1723;
+      height: 65px;
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+    }
+
+    .bottom-nav a {
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      font-size: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 60px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .bottom-nav a.active {
+      color: #BF1723;
+    }
+
+    /* 🔥 Icono en rojo cuando está activo */
+    .bottom-nav a.active img {
+      filter: invert(28%) sepia(94%) saturate(7471%) hue-rotate(356deg) brightness(95%) contrast(96%);
+    }
+
+    .bottom-nav img {
+      width: 22px;
+      height: 22px;
+      margin-bottom: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <button class="back-button" onclick="window.location.href='index.html'">← Atrás</button>
+  </div>
+
+  <main class="viewport">
+    <div class="container">
+      <h1>Reglamento Torneo</h1>
+
+      <div class="reglamento-buttons">
+        <a href="normativa.html" class="regla-btn">Normativa</a>
+        <a href="competición.html" class="regla-btn">Competición</a>
+        <a href="concursotriples.html" class="regla-btn">Concurso de Triples</a>
+        <a href="allstar.html" class="regla-btn">All-Star Game</a>
+        <a href="influencers.html" class="regla-btn full">1vs1 Influencers</a>
+      </div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="index.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/home.png" alt="Inicio"/>Inicio</a>
+    <a href="mvp.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/combo-chart.png" alt="Mvp Torneo"/>MVP del Torneo</a>
+    <a href="partidos.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/calendar.png" alt="Partidos"/>Horarios</a>
+    <a href="votaciones.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/ballot.png" alt="Votaciones"/>Votaciones</a>
+    <a href="reglamento.html" class="active"><img src="https://img.icons8.com/ios-filled/50/ffffff/rules.png" alt="Reglamento"/>Reglamento</a>
+  </nav>
+
+</body>
+</html>

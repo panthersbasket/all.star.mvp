@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>MVP All-Star Game</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(90deg, #096BB3 0%, #000000 50%, #BF1723 100%);
+      color: white;
+      overflow-y: auto;
+    }
+
+    .top-bar {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding-top: calc(env(safe-area-inset-top, 0px) + 20px);
+      padding-bottom: 10px;
+    }
+
+    .back-button {
+      background: #000;
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+      transition: transform 0.2s ease;
+    }
+    .back-button:hover { transform: scale(1.05); }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 16px 90px;
+    }
+
+    h1 {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(1.6rem, 5vw, 2rem);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 12px 0 20px;
+      text-align: center;
+      text-shadow: 2px 2px 0 #000, 0 0 6px #000000;
+    }
+
+    .reglamento {
+      background: rgba(0,0,0,0.6);
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      text-align: left;
+      box-shadow: 0 0 8px rgba(0,0,0,0.5);
+      color: #fff;
+    }
+
+    .reglamento h2 {
+      font-family: 'Anton', sans-serif;
+      font-size: 1rem;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .reglamento ul, .reglamento ol {
+      margin-left: 18px;
+      margin-bottom: 12px;
+    }
+
+    .reglamento p {
+      margin-bottom: 12px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 6px 0 calc(env(safe-area-inset-bottom, 0px));
+      border-top: 2px solid #BF1723;
+      height: 65px;
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+    }
+
+    .bottom-nav a {
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      font-size: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 60px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .bottom-nav a.active { color: #BF1723; }
+
+    .bottom-nav a.active img {
+      filter: invert(28%) sepia(94%) saturate(7471%) hue-rotate(356deg) brightness(95%) contrast(96%);
+    }
+
+    .bottom-nav img {
+      width: 22px;
+      height: 22px;
+      margin-bottom: 2px;
+    }
+  </style>
+</head>
+<body>
+
+   <div class="top-bar">
+    <button class="back-button" onclick="window.location.href='reglamento.html'">← Atrás</button>
+  </div>
+
+  <div class="container">
+    <h1>MVP All-Star Game</h1>
+
+    <div class="reglamento">
+      <h2>1. Selección de jugadores</h2>
+      <ul>
+        <li>Los jugadores que participarán en el MVP All-Star Game serán seleccionados exclusivamente mediante votación popular a través de la aplicación oficial del Torneo MVP All-Star.</li>
+        <li>Cada usuario podrá votar por sus jugadores favoritos dentro de los plazos establecidos por la organización.</li>
+        <li>Los jugadores con mayor número de votos dentro de cada posición o categoría serán los que conformarán los equipos All-Star.</li>
+        <li>La organización se reserva el derecho de añadir jugadores adicionales en caso de ausencias, lesiones o situaciones excepcionales.</li>
+      </ul>
+
+      <h2>2. Formación de equipos</h2>
+      <ul>
+        <li>Los jugadores seleccionados se dividirán en dos equipos oficiales All-Star: Hoops Blanco y Hoops Negro.</li>
+        <li>La organización distribuirá a los jugadores de forma equilibrada para asegurar competitividad y espectáculo.</li>
+        <li>Cada equipo contará con staff técnico asignado.</li>
+      </ul>
+
+      <h2>3. Reglamento del partido</h2>
+      <ul>
+        <li>El sistema de juego, normas generales, funcionamiento del reloj, faltas, posesiones y el resto de elementos reglamentarios será exactamente el mismo que el del resto de partidos del Torneo MVP All-Star.</li>
+        <li>La única excepción aplicable es la duración del partido, detallada en el apartado siguiente.</li>
+      </ul>
+
+      <h2>4. Duración del partido y prórrogas</h2>
+      <ul>
+        <li>El MVP All-Star Game constará de cuatro tiempos de 8 minutos cada uno.</li>
+        <li>El descanso entre ambos tiempos será de 5 minutos.</li>
+        <li>El tiempo de juego se gestionará igual que en cualquier otro partido del torneo.</li>
+        <li>En caso de empate al finalizar el tiempo reglamentario, se disputarán prórrogas de 2 minutos, tantas como sea necesario hasta que un equipo gane.</li>
+      </ul>
+
+      <h2>5. Equipaciones</h2>
+      <p>Gracias al apoyo de nuestro colaborador Hoops, ambos equipos competirán con equipaciones exclusivas proporcionadas por la marca:</p>
+      <ul>
+        <li>El equipo Hoops Blanco recibirá una camiseta blanca.</li>
+        <li>El equipo Hoops Negro recibirá una camiseta negra.</li>
+        <li>Todos los jugadores deberán asistir con pantalón de juego negro, obligatorio para garantizar la uniformidad durante el encuentro.</li>
+      </ul>
+
+      <h2>6. Compromiso y puntualidad</h2>
+      <ul>
+        <li>Todos los participantes deberán presentarse 30 minutos antes del inicio del partido para el calentamiento, fotos y la presentación oficial del All-Star Game.</li>
+        <li>La no asistencia sin aviso previo podrá afectar la participación futura del jugador en próximos eventos MVP All-Star.</li>
+      </ul>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="index.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/home.png" alt="Inicio"/>Inicio</a>
+    <a href="mvp.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/combo-chart.png" alt="MVP"/>MVP del Torneo</a>
+    <a href="partidos.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/calendar.png" alt="Horarios"/>Horarios</a>
+    <a href="votaciones.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/ballot.png" alt="Votaciones"/>Votaciones</a>
+    <a href="allstar.html" class="active"><img src="https://img.icons8.com/ios-filled/50/ffffff/rules.png" alt="All-Star Game"/>Reglamento</a>
+  </nav>
+
+</body>
+</html>

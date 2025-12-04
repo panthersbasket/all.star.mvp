@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inicio</title>
+
+  <!-- Tipografías deportivas -->
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@600&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="img/logo-pantera.png">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(90deg, #096BB3 0%, #000000 50%, #BF1723 100%);
+      color: white;
+      overflow: hidden;
+    }
+
+    #cargando {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, #096BB3 0%, #000000 50%, #BF1723 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+      color: #fff;
+      z-index: 1000;
+      flex-direction: column;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      width: 100%;
+      padding: 20px;
+      padding-top: 60px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      text-align: center;
+    }
+
+    .texto h1 {
+      font-family: 'Anton', sans-serif;
+      font-size: 3rem;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+      text-shadow: 2px 2px 0 #000, 0 0 8px #000000;
+      word-break: break-word;
+    }
+
+    .texto p {
+      font-family: 'Anton', sans-serif;
+      font-size: 0.9rem;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 0 #000, 0 0 6px #096BB3;
+    }
+
+    .botonera {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .button {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      background: linear-gradient(90deg, #096BB3, #BF1723);
+      color: #fff;
+      padding: 10px 25px;
+      border-radius: 25px;
+      font-weight: bold;
+      transition: transform 0.3s ease;
+    }
+
+    .button:hover {
+      transform: scale(1.08);
+    }
+
+    .imagenes {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .imagen-central {
+      max-width: 180px; /* más pequeña */
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      transition: transform 0.3s ease, filter 0.3s ease;
+      filter: drop-shadow(0 0 6px #000000);
+    }
+
+    .imagen-central:hover {
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 10px #000000);
+    }
+
+    .imagenes-secundarias {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      object-fit: contain;
+      transition: transform 0.3s ease, filter 0.3s ease;
+      filter: drop-shadow(0 0 6px #000000);
+    }
+
+    .logo:hover {
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 10px #000000);
+    }
+
+    .logo-izquierda { max-width: 130px; }
+    .logo-derecha { max-width: 60px; }
+    .logo-medio { max-width: 110px; }
+
+    @media (max-width: 768px) {
+      .texto h1 { font-size: 2.2rem; }
+      .texto p { font-size: 0.8rem; }
+      .imagen-central { max-width: 140px; } /* más pequeña en móvil */
+      .logo-izquierda { max-width: 100px; }
+      .logo-derecha { max-width: 45px; }
+      .logo-medio { max-width: 85px; }
+      .button { width: 80%; margin: 0 auto; text-align: center; }
+      .botonera { flex-direction: column; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="cargando">🏀 Cargando...</div>
+
+  <div class="container" id="container">
+    <div class="texto">
+      <h1>ALL-STAR MVP</h1>
+      <p>APP WEB OFICIAL del torneo.</p>
+
+      <div class="botonera">
+        <a href="mvp.html" class="button">MVP DEL TORNEO</a>
+        <a href="partidos.html" class="button">HORARIOS</a>
+        <a href="votaciones.html" class="button">ELIGE TU ALL STAR</a>
+        <a href="reglamento.html" class="button">REGLAMENTO</a>
+      </div>
+    </div>
+
+    <div class="imagenes">
+      <img src="img/logoallstarmvp.png" alt="Logo central" class="imagen-central">
+      <div class="imagenes-secundarias">
+        <img src="img/basketballemotion.png" alt="Logo izquierda" class="logo logo-izquierda">
+        <img src="img/letrapanthersrecta.png" alt="Logo medio" class="logo logo-medio">
+        <img src="img/sika.png" alt="Logo derecha" class="logo logo-derecha">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const container = document.getElementById('container');
+    const cargando = document.getElementById('cargando');
+
+    function mostrarContainer() {
+      cargando.style.display = 'none';
+      container.style.opacity = '1';
+    }
+
+    window.addEventListener('load', mostrarContainer);
+    window.addEventListener('pageshow', function(event) {
+      if (event.persisted) {
+        mostrarContainer();
+      }
+    });
+  </script>
+
+</body>
+</html>

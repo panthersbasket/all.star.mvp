@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>1vs1 Influencers</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(90deg, #096BB3 0%, #000000 50%, #BF1723 100%);
+      color: white;
+      overflow-y: auto;
+    }
+
+    .top-bar {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding-top: calc(env(safe-area-inset-top, 0px) + 20px);
+      padding-bottom: 10px;
+    }
+
+    .back-button {
+      background: #000;
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+      transition: transform 0.2s ease;
+    }
+    .back-button:hover { transform: scale(1.05); }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 16px 90px;
+    }
+
+    h1 {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(1.6rem, 5vw, 2rem);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 12px 0 20px;
+      text-align: center;
+      text-shadow: 2px 2px 0 #000, 0 0 6px #000000;
+    }
+
+    .reglamento {
+      background: rgba(0,0,0,0.6);
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      text-align: left;
+      box-shadow: 0 0 8px rgba(0,0,0,0.5);
+      color: #fff;
+    }
+
+    .reglamento h2 {
+      font-family: 'Anton', sans-serif;
+      font-size: 1rem;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .reglamento ul {
+      margin-left: 18px;
+      margin-bottom: 12px;
+    }
+
+    .reglamento p {
+      margin-bottom: 12px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 6px 0 calc(env(safe-area-inset-bottom, 0px));
+      border-top: 2px solid #BF1723;
+      height: 65px;
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+    }
+
+    .bottom-nav a {
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      font-size: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 60px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .bottom-nav a.active { color: #BF1723; }
+
+    .bottom-nav a.active img {
+      filter: invert(28%) sepia(94%) saturate(7471%) hue-rotate(356deg) brightness(95%) contrast(96%);
+    }
+
+    .bottom-nav img {
+      width: 22px;
+      height: 22px;
+      margin-bottom: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <button class="back-button" onclick="window.location.href='reglamento.html'">← Atrás</button>
+  </div>
+
+  <div class="container">
+    <h1>1vs1 Influencers</h1>
+
+    <div class="reglamento">
+      <h2>Formato</h2>
+      <ul>
+        <li>4 participantes: 2 semifinales y 1 final.</li>
+        <li>Emparejamientos por sorteo.</li>
+      </ul>
+
+      <h2>Arbitraje</h2>
+      <ul>
+        <li>Todos los partidos serán arbitrados por un árbitro profesional.</li>
+      </ul>
+
+      <h2>Reglas del juego</h2>
+
+      <h2>Duración</h2>
+      <ul>
+        <li>Tiempo máximo: 7 minutos.</li>
+      </ul>
+
+      <h2>Condición de victoria</h2>
+      <ul>
+        <li>Gana el primer jugador que llegue a 7 puntos.</li>
+        <li>Si pasan los 7 minutos sin ganador, el partido continúa hasta llegar a 7.</li>
+      </ul>
+
+      <h2>Valor de las canastas</h2>
+      <ul>
+        <li>Dentro de la línea de 3: 1 punto.</li>
+        <li>Fuera de la línea de 3: 2 puntos.</li>
+        <li>Mates: 2 puntos.</li>
+      </ul>
+
+      <h2>Posesiones</h2>
+      <ul>
+        <li>El jugador que anota mantiene la posesión.</li>
+        <li>Solo cambia por robo, rebote defensivo o violación.</li>
+        <li>Una vez el atacante entra en la línea de 3, no puede volver a salir: violación.</li>
+        <li>Al iniciar la posesión, Check-ball obligatorio en la zona central (entre la línea de 3 y medio campo).</li>
+      </ul>
+
+      <h2>Faltas</h2>
+      <ul>
+        <li>A partir de la tercera falta: 1 tiro libre (1 punto) + posesión para el jugador que recibe la falta.</li>
+      </ul>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="index.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/home.png" alt="Inicio"/>Inicio</a>
+    <a href="mvp.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/combo-chart.png" alt="MVP"/>MVP del Torneo</a>
+    <a href="partidos.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/calendar.png" alt="Horarios"/>Horarios</a>
+    <a href="votaciones.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/ballot.png" alt="Votaciones"/>Votaciones</a>
+    <a href="influencers.html" class="active"><img src="https://img.icons8.com/ios-filled/50/ffffff/rules.png" alt="1vs1 Influencers"/>Reglamento</a>
+  </nav>
+
+</body>
+</html>

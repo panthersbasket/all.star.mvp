@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>MVP del Torneo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --nav-height: 65px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Bebas Neue', 'Arial', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(90deg, #096BB3 0%, #BF1723 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      text-align: center;
+      padding-top: calc(var(--safe-top) + 20px);
+      padding-bottom: calc(var(--nav-height) + var(--safe-bottom));
+    }
+
+    /* Botón atrás */
+    .top-bar {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+    .back-button {
+      background: #000;
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .back-button:hover {
+      background: #222;
+      transform: scale(1.05);
+    }
+
+    h1 {
+      font-family: 'Anton', sans-serif;
+      font-size: 3rem;
+      margin-bottom: 40px;
+      text-shadow: 2px 2px 0 #000, 0 0 8px #000;
+    }
+
+    /* Botones grises grandes */
+    .menu-inicial {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      width: 100%;
+      max-width: 600px;
+      padding: 0 16px;
+    }
+
+    .menu-btn {
+      width: 92%;
+      max-width: 560px;
+      min-height: 140px;
+      background: rgba(0,0,0,0.68);
+      border: none;
+      border-radius: 18px;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 0 16px rgba(0,0,0,0.55);
+      transition: transform 220ms ease, background 220ms ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+      font-family: 'Anton', sans-serif;
+      font-size: 1.5rem;
+    }
+    .menu-btn:hover {
+      transform: scale(1.03);
+      background: rgba(0,0,0,0.82);
+    }
+
+    /* Barra nav inferior */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; width: 100%;
+      background: rgba(0,0,0,0.85);
+      display: flex; justify-content: space-around; align-items: center;
+      padding: 8px 0 calc(8px + var(--safe-bottom));
+      border-top: 2px solid #BF1723;
+      height: var(--nav-height);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+    }
+    .bottom-nav a {
+      color: #fff; text-decoration: none; text-align: center; font-size: 8px;
+      display: flex; flex-direction: column; align-items: center;
+      max-width: 60px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .bottom-nav a.active {
+      color: #BF1723;
+    }
+    .bottom-nav a.active img {
+      filter: brightness(0) saturate(100%) invert(26%) sepia(92%) saturate(5964%) hue-rotate(346deg) brightness(96%) contrast(92%);
+    }
+    .bottom-nav img {
+      width: 22px;
+      height: 22px;
+      margin-bottom: 3px;
+    }
+
+    @media (max-width: 380px) {
+      .menu-btn { min-height: 120px; font-size: 1.3rem; }
+      h1 { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Botón atrás centrado -->
+  <div class="top-bar">
+    <button class="back-button" onclick="window.location.href='index.html'">← Atrás</button>
+  </div>
+
+  <h1>MVP DEL TORNEO</h1>
+
+  <div class="menu-inicial">
+    <button class="menu-btn" onclick="window.location.href='estadisticas.html'">ESTADÍSTICAS POR EQUIPO</button>
+    <button class="menu-btn" onclick="window.location.href='clasificacion.html'">CLASIFICACIÓN DE LOS JUGADORES</button>
+  </div>
+
+  <!-- Barra nav inferior -->
+  <nav class="bottom-nav">
+    <a href="index.html">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/home.png" alt="Inicio"/>
+      Inicio
+    </a>
+    <a href="mvp.html" class="active">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/combo-chart.png" alt="Mvp Torneo"/>
+      MVP del Torneo
+    </a>
+    <a href="partidos.html">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/calendar.png" alt="Partidos"/>
+      Horarios
+    </a>
+    <a href="votaciones.html">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/ballot.png" alt="Votaciones"/>
+      Votaciones
+    </a>
+    <a href="reglamento.html">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/rules.png" alt="Reglamento"/>
+      Reglamento
+    </a>
+  </nav>
+
+</body>
+</html>

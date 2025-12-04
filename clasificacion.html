@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Clasificación por Jugadores</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Poppins', 'Arial', sans-serif;
+      background: linear-gradient(90deg, #096bb3 0%, #bf1723 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+
+    .back-button {
+      margin-top: 20px;
+      background: #000;
+      color: #fff;
+      padding: 6px 18px;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.3s ease;
+      box-shadow: 0 0 10px rgba(0,0,0,0.6);
+    }
+    .back-button:hover { transform: scale(1.05); }
+
+    h1 {
+      font-family: 'Anton', sans-serif;
+      margin: 18px 0 10px;
+      font-size: 1.6rem;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.6), 0 0 8px #000000;
+    }
+
+    #mensajeCargando {
+      font-size: 1rem;
+      color: #ffcccc;
+      animation: fadeIn 0.8s ease-in-out infinite alternate;
+      margin-top: 10px;
+      text-align: center;
+    }
+    @keyframes fadeIn { from { opacity: 0.4; } to { opacity: 1; } }
+
+    .clasificacion-container {
+      width: 100%;
+      max-width: 650px;
+      margin-top: 16px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 16px;
+      overflow-y: scroll;
+      position: relative;
+      scrollbar-width: thin;
+      scrollbar-color: #000000 rgba(0,0,0,0.25);
+    }
+
+    .clasificacion-container::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 6px;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      border-radius: 3px;
+      pointer-events: none;
+    }
+
+    .clasificacion-container::-webkit-scrollbar { width: 10px; }
+    .clasificacion-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.25); border-radius: 10px; }
+    .clasificacion-container::-webkit-scrollbar-thumb { background: #000000; border-radius: 10px; border: 2px solid rgba(255,255,255,0.2); }
+    .clasificacion-container::-webkit-scrollbar-thumb:hover { background: #333333; }
+
+    .clasificacion-header,
+    .clasificacion-row {
+      display: grid;
+      grid-template-columns: 52px 50px auto 64px;
+      align-items: center;
+      padding: 12px 15px;
+    }
+
+    .clasificacion-header {
+      background: rgba(0,0,0,0.6);
+      font-weight: bold;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #fff;
+    }
+
+    .clasificacion-row {
+      background: rgba(0,0,0,0.35);
+      font-size: 0.95rem;
+      transition: background 0.2s ease;
+      color: #fff;
+    }
+    .clasificacion-row:nth-child(even) { background: rgba(0,0,0,0.25); }
+    .clasificacion-row:hover { background: rgba(0,0,0,0.45); }
+
+    .col-pos,
+    .col-pts { text-align: center; font-weight: bold; font-size: 1rem; color: #fff; }
+
+    /* Contenedor de imagen para evitar recortes y mantener proporción */
+    .img-wrap {
+      width: 38px;
+      aspect-ratio: 1 / 1;
+      border-radius: 8px;
+      margin: 0 auto;
+      background: #111;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      box-shadow: 0 0 6px rgba(0,0,0,0.5);
+    }
+    .img-wrap img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .nombre-cell {
+      font-family: 'Anton', sans-serif;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #fff;
+      line-height: 1.2;
+      word-break: break-word; /* permite partir apellidos en segunda línea */
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0 calc(8px + env(safe-area-inset-bottom,0px));
+      border-top: 2px solid #BF1723;
+      height: 65px;
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+    }
+
+    .bottom-nav a {
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      font-size: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 60px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 0.3s ease;
+    }
+
+    .bottom-nav a:hover { color: #BF1723; }
+
+    .bottom-nav img {
+      width: 22px;
+      height: 22px;
+      margin-bottom: 3px;
+    }
+
+    .bottom-nav a.active { color: #BF1723; }
+    .bottom-nav a.active img {
+      filter: invert(28%) sepia(94%) saturate(7471%) hue-rotate(356deg) brightness(95%) contrast(96%);
+    }
+
+    @media (max-width: 380px) {
+      .clasificacion-header,
+      .clasificacion-row {
+        grid-template-columns: 46px 44px auto 58px;
+        padding: 10px 12px;
+      }
+      .img-wrap { width: 34px; }
+      h1 { font-size: 1.45rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <button class="back-button" onclick="window.location.href='mvp.html'">← Atrás</button>
+
+  <h1>Clasificación Jugadores</h1>
+
+  <div id="mensajeCargando">🏀 CARGANDO CLASIFICACIÓN...</div>
+
+  <div class="clasificacion-container" id="clasificacionContainer"></div>
+
+  <nav class="bottom-nav">
+    <a href="index.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/home.png" alt="Inicio"/>Inicio</a>
+    <a href="mvp.html" class="active"><img src="https://img.icons8.com/ios-filled/50/ffffff/combo-chart.png" alt="Mvp Torneo"/>MVP del Torneo</a>
+    <a href="partidos.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/calendar.png" alt="Partidos"/>Horarios</a>
+    <a href="votaciones.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/ballot.png" alt="Votaciones"/>Votaciones</a>
+    <a href="reglamento.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/rules.png" alt="Reglamento"/>Reglamento</a>
+  </nav>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script>
+    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQL0IIWXMHm8J_cnyAsSw0oZtQr1plE7CgL5zIEu1Ir1cz4NwLWtq7YXUcmtfYLxX8Uf_GJGfLS7pvP/pub?gid=610259645&single=true&output=csv";
+
+    const clasificacionContainer = document.getElementById("clasificacionContainer");
+    const mensajeCargando = document.getElementById("mensajeCargando");
+
+    // Formatea: nombre en primera línea, apellidos en segunda
+    function formatNombre(nombre) {
+      const partes = (nombre || "").trim().split(/\s+/);
+      if (partes.length <= 1) return nombre;
+      const nombrePrincipal = partes[0];
+      const apellidos = partes.slice(1).join(" ");
+      return `${nombrePrincipal}<br>${apellidos}`;
+    }
+
+    function cargarClasificacion() {
+      mensajeCargando.style.display = "block";
+
+      Papa.parse(sheetURL, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function (results) {
+          const data = results.data;
+          const jugadores = [];
+
+          data.forEach((row) => {
+            const nombre = (row.Nombre || "").trim();
+            if (!nombre) return;
+
+            const tl = parseInt(row.TirosLibres) || 0;
+            const p2 = parseInt(row.Puntos2) || 0;
+            const t3 = parseInt(row.Triples) || 0;
+
+            const totalPts = tl * 1 + p2 * 2 + t3 * 3;
+            const icono = "img/" + ((row.ImgJugador || "default.png").trim());
+
+            jugadores.push({ nombre, totalPts, icono });
+          });
+
+          jugadores.sort((a, b) => b.totalPts - a.totalPts);
+
+          mensajeCargando.style.display = "none";
+
+          clasificacionContainer.innerHTML = `
+            <div class="clasificacion-header">
+              <div class="col-pos">POS</div>
+              <div></div>
+              <div>NOMBRE</div>
+              <div class="col-pts">PTS</div>
+            </div>
+          `;
+
+          jugadores.forEach((j, index) => {
+            const row = document.createElement("div");
+            row.className = "clasificacion-row";
+            row.innerHTML = `
+              <div class="col-pos">${index + 1}</div>
+              <div>
+                <div class="img-wrap">
+                  <img src="${j.icono}" alt="Foto jugador" onerror="this.src='img/default.png'">
+                </div>
+              </div>
+              <div class="nombre-cell" title="${j.nombre}">${formatNombre(j.nombre)}</div>
+              <div class="col-pts">${j.totalPts}</div>
+            `;
+            clasificacionContainer.appendChild(row);
+          });
+
+          clasificacionContainer.scrollTop = 0;
+        },
+        error: function () {
+          mensajeCargando.textContent = "❌ Error cargando clasificación";
+        }
+      });
+    }
+
+    cargarClasificacion();
+    setInterval(cargarClasificacion, 60000);
+  </script>
+
+</body>
+</html>

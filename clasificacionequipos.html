@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Clasificación equipos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --nav-height: 65px;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Poppins', 'Arial', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(90deg, #096BB3 0%, #BF1723 100%);
+      color: #fff;
+      padding-bottom: calc(var(--nav-height) + var(--safe-bottom));
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .top-bar {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding-top: calc(var(--safe-top) + 24px);
+      padding-bottom: 12px;
+      z-index: 100;
+    }
+    .back-button {
+      background: #000;
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+      transition: transform 0.2s ease;
+    }
+    .back-button:hover { transform: scale(1.05); }
+    .view {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 0 16px 16px;
+      width: 100%;
+      max-width: 650px;
+      align-items: center;
+    }
+    .view h1 {
+      font-family: 'Anton', sans-serif;
+      text-align: center;
+      font-size: 1.6rem;
+      text-transform: uppercase;
+      margin: 6px 0 2px;
+      letter-spacing: 1px;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.6), 0 0 8px #000;
+      white-space: nowrap;
+    }
+    #mensajeCargando {
+      font-size: 1rem;
+      color: #ffcccc;
+      animation: fadeIn 0.8s ease-in-out infinite alternate;
+      margin-top: 6px;
+      text-align: center;
+      display: none;
+    }
+    @keyframes fadeIn { from { opacity: 0.4; } to { opacity: 1; } }
+    .table-wrap {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      max-width: 650px;
+      background: rgba(0,0,0,0.6);
+      border-radius: 14px;
+      box-shadow: 0 0 10px rgba(191,23,35,0.4), 0 0 10px rgba(9,107,179,0.4);
+      overflow: hidden;
+      margin-top: 28px;
+    }
+    table {
+      max-width: 500px;
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    col.pos { width: 12%; }
+    col.nombre { width: 44%; }
+    col.g { width: 14%; }
+    col.p { width: 14%; }
+    col.pt { width: 16%; }
+    thead tr { background: rgba(0,0,0,0.85); }
+    th, td {
+      padding: 12px;
+      text-align: center;
+      font-size: 1rem;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    th {
+      font-family: 'Anton', sans-serif;
+      text-transform: uppercase;
+      font-size: 1.05rem;
+      letter-spacing: 0.5px;
+    }
+    td.equipo {
+      text-transform: uppercase;
+      overflow: visible;
+      text-overflow: clip;
+      font-size: clamp(0.9rem, 3.6vw, 1rem);
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+    tbody tr:nth-child(even) { background: rgba(255,255,255,0.06); }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0 calc(8px + var(--safe-bottom));
+      border-top: 2px solid #BF1723;
+      height: var(--nav-height);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+    }
+    .bottom-nav a {
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      font-size: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 60px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 0.3s ease;
+    }
+    .bottom-nav a:hover { color: #BF1723; }
+    .bottom-nav a.active { color: #BF1723; }
+    .bottom-nav a.active img {
+      filter: invert(28%) sepia(94%) saturate(7470%) hue-rotate(350deg) brightness(96%) contrast(92%);
+    }
+    .bottom-nav img { width: 22px; height: 22px; margin-bottom: 3px; }
+    @media (max-width: 380px) {
+      .view h1 { font-size: 1.4rem; }
+      th, td { padding: 10px; font-size: 0.95rem; }
+      col.nombre { width: 46%; }
+      col.g, col.p { width: 13%; }
+      col.pt { width: 16%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <button class="back-button" onclick="backSmart()">← Atrás</button>
+  </div>
+
+  <div class="view">
+    <h1>Clasificación equipos</h1>
+    <div id="mensajeCargando">🏀 CARGANDO EQUIPOS...</div>
+
+    <div class="table-wrap">
+      <table id="tablaClasificacion">
+        <colgroup>
+          <col class="pos" />
+          <col class="nombre" />
+          <col class="g" />
+          <col class="p" />
+          <col class="pt" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th></th>
+            <th>EQUIPO</th>
+            <th>G</th>
+            <th>P</th>
+            <th>PT</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="index.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/home.png" alt="Inicio"/>Inicio</a>
+    <a href="mvp.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/combo-chart.png" alt="MVP del Torneo"/>MVP del Torneo</a>
+    <a href="partidos.html" class="active"><img src="https://img.icons8.com/ios-filled/50/ffffff/calendar.png" alt="Horarios"/>Horarios</a>
+    <a href="votaciones.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/ballot.png" alt="Votaciones"/>Votaciones</a>
+    <a href="reglamento.html"><img src="https://img.icons8.com/ios-filled/50/ffffff/rules.png" alt="Reglamento"/>Reglamento</a>
+  </nav>
+
+  <script>
+    function backSmart() {
+      const hasReferrer = document.referrer && document.referrer !== location.href;
+      if (hasReferrer || history.length > 1) {
+        history.back();
+      } else {
+        window.location.href = 'index.html';
+      }
+    }
+
+    // URL del CSV
+    const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQqS8AD-IUfniSrshjttdcygDajr72weBdghArEnFtpfiMEQwh5CVv6JHGlSd8jAEdXCU8G9NAB6sbi/pub?gid=0&single=true&output=csv";
+
+    // Nombres tal como aparecen en la hoja (evita apóstrofes distintos)
+    const EQUIPOS_INICIALES = ["Panthers", "Splashers", "ByForce", "Vendrell"];
+
+    function crearEstructuraEquipos() {
+      const equipos = {};
+      EQUIPOS_INICIALES.forEach(n => {
+        equipos[n] = { nombre: n, v: 0, d: 0, pts: 0 };
+      });
+      return equipos;
+    }
+
+    // eq1, foto1, eq2, foto2, fecha, hora, puntos1, puntos2, estado, link
+    function parseLineaCSV(linea) {
+      const cols = linea.split(",").map(c => c.trim());
+      return {
+        eq1: cols[0],
+        eq2: cols[2],
+        puntos1: cols[6],
+        puntos2: cols[7],
+        estado: (cols[8] || "").toLowerCase(),
+      };
+    }
+
+    // Solo acumula si el estado es finalizado y hay puntuación válida (evita sumar 1 por "empate" 0-0 vacío)
+    function acumularPartido(equipos, partido) {
+      const { eq1, eq2, puntos1, puntos2, estado } = partido;
+      if (!eq1 || !eq2) return;
+      if (!EQUIPOS_INICIALES.includes(eq1) || !EQUIPOS_INICIALES.includes(eq2)) return;
+
+      const p1 = parseInt(puntos1);
+      const p2 = parseInt(puntos2);
+
+      // Validación: ambos números presentes y al menos uno > 0
+      const puntosValidos = !isNaN(p1) && !isNaN(p2) && (p1 > 0 || p2 > 0);
+
+      if (estado.includes("finalizado") && puntosValidos) {
+        if (p1 > p2) {
+          equipos[eq1].v++; equipos[eq2].d++;
+          equipos[eq1].pts += 2; equipos[eq2].pts += 1;
+        } else if (p2 > p1) {
+          equipos[eq2].v++; equipos[eq1].d++;
+          equipos[eq2].pts += 2; equipos[eq1].pts += 1;
+        } else {
+          // Empate con puntos válidos (por si en algún formato hay empates reales)
+          equipos[eq1].pts += 1; equipos[eq2].pts += 1;
+        }
+      }
+    }
+
+    function ordenarClasificacion(equipos) {
+      return Object.values(equipos).sort((a, b) => {
+        if (b.pts !== a.pts) return b.pts - a.pts;
+        if (b.v !== a.v) return b.v - a.v;
+        return a.nombre.localeCompare(b.nombre);
+      });
+    }
+
+    async function cargarClasificacion() {
+      const tbody = document.querySelector("#tablaClasificacion tbody");
+      const mensajeCargando = document.getElementById("mensajeCargando");
+
+      mensajeCargando.style.display = "block";
+      tbody.innerHTML = "";
+
+      try {
+        const res = await fetch(SHEET_URL, { cache: "no-store" });
+        const texto = await res.text();
+        const lineas = texto.split("\n").map(l => l.trim()).filter(l => l.length);
+
+        // Saltar cabecera si detecta "eq1" en primera línea
+        const esCabecera = lineas.length && lineas[0].toLowerCase().includes("eq1");
+        const datos = esCabecera ? lineas.slice(1) : lineas;
+
+        const equipos = crearEstructuraEquipos();
+
+        datos.forEach(l => {
+          const partido = parseLineaCSV(l);
+          acumularPartido(equipos, partido);
+        });
+
+        const listaOrdenada = ordenarClasificacion(equipos);
+
+        if (!listaOrdenada.length) {
+          tbody.innerHTML = `<tr><td colspan="5">ℹ️ Sin datos aún</td></tr>`;
+        } else {
+          listaOrdenada.forEach((e, i) => {
+            tbody.innerHTML += `
+              <tr>
+                <td>${i + 1}</td>
+                <td class="equipo">${e.nombre}</td>
+                <td>${e.v}</td>
+                <td>${e.d}</td>
+                <td>${e.pts}</td>
+              </tr>`;
+          });
+        }
+
+        mensajeCargando.style.display = "none";
+      } catch (err) {
+        console.error("Error cargando clasificación:", err);
+        const mensaje = document.getElementById("mensajeCargando");
+        mensaje.textContent = "❌ Error cargando equipos";
+      }
+    }
+
+    cargarClasificacion();
+    setInterval(cargarClasificacion, 30000);
+  </script>
+</body>
+</html>
