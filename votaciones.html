@@ -24,7 +24,8 @@
       align-items: start;
       padding: 0 12px calc(var(--nav-height) + var(--safe-bottom));
       text-align: center;
-      overflow-y: auto; /* scroll activado para que el botón no se corte */
+      /* sin scroll */
+      overflow: hidden;
     }
 
     .back-button {
@@ -64,6 +65,7 @@
       padding: 0 4px;
       align-content: start;
       justify-items: stretch;
+      height: calc(100vh - var(--nav-height) - 188px);
     }
 
     .bloque-votacion {
@@ -76,7 +78,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      min-height: 120px; /* tamaño original */
+      min-height: 120px;
     }
 
     .logo-equipo {
@@ -126,7 +128,7 @@
       font-size: 13px;
       box-shadow: 0 0 10px rgba(0,0,0,0.6);
       margin-top: 8px;
-      margin-bottom: 120px; /* sube bastante el botón para que no se tape */
+      margin-bottom: 120px; /* botón más arriba */
       transition: transform 0.25s ease;
       justify-self: center;
     }
@@ -274,10 +276,10 @@
     <div class="modal-content">
       <h2>Cómo funciona la votación</h2>
       <p>
-        -La selección de los jugadores que participarán en el MVP<br> ALL Star Game del domingo 07/12 a las 17 hrs,<br/>
+        -La selección de los jugadores que participarán en el MVP<br/>ALL Star Game del domingo 07/12 a las 17 hrs,<br/>
         se realizará directamente desde esta sección de la aplicación oficial del torneo.<br/>
         -En esta sección podrás votar a un jugador de cada equipo.<br/>
-        -Una vez finalizado el periodo de votaciones, los 5 jugadores más votados de cada equipo serán los seleccionados para disputar el partido All Star Game.<br>
+        -Una vez finalizado el periodo de votaciones, los 5 jugadores más votados de cada equipo serán los seleccionados para disputar el partido All Star Game.<br/>
         -Solo se permite una votación por dispositivo.
       </p>
       <div class="modal-actions">
